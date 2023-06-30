@@ -18,9 +18,11 @@ const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const fs_1 = __importDefault(require("fs"));
 const getData_1 = require("./getData");
+const individualData_1 = require("./individualData");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+const HOSTNAME = process.env.HOSTNAME || '0.0.0.0';
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const getFile = (req, res, fileType) => {
@@ -72,4 +74,20 @@ app.post("/crearcertificado", (req, res) => __awaiter(void 0, void 0, void 0, fu
         res.status(500).send("Internal server error.");
     }
 }));
-app.listen(port, () => console.log(`Certify App listening on port ${port}!`));
+app.post("/certificadoIndividual", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (req.headers.authorization === process.env.AUTHORIZATION_CERT) {
+            yield (0, individualData_1.individualData)(req, res);
+            console.log(req.body);
+        }
+        else {
+            res.status(401);
+            res.send("Unauthorized");
+        }
+    }
+    catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Internal server error.");
+    }
+}));
+app.listen(PORT, () => console.log(`Certify App listening on port ${PORT}!`));

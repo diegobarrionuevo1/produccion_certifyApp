@@ -21,7 +21,8 @@ function sendEmail(emailData, retryCount = 0, API_KEY, titulo_curso, fecha_inici
             substitutions: {
                 nombre: emailData.nombre,
                 apellido: emailData.apellido,
-                urlFront: emailData.url_front,
+                id_curso: String(emailData.id_curso),
+                correo: emailData.correo,
                 titulo_curso: titulo_curso,
                 fecha_taller: fecha_inicio
             },
