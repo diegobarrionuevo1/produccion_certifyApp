@@ -81,7 +81,6 @@ const individualData = (req, res) => __awaiter(void 0, void 0, void 0, function*
             }
             res.status(200);
             res.send("Authorized request");
-            let correo = fetchPromise.json.data.correo;
             fetchPromise.json.data.id_curso = id_curso;
             let persona = [fetchPromise.json.data];
             (0, sharp_1.superponerTextoEnImagen)(id_curso, plantillaCurso, persona)

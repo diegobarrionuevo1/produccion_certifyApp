@@ -86,7 +86,7 @@ const getData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 const correo = registradosPromise.json.data.correo;
                 if (!conjuntoCorreos.has(correo)) {
                     conjuntoCorreos.add(correo);
-                    registradosPromise.json.data.urlFront = `https://certificados.donweb.com/${id_curso}/${id_curso}_${correo.toLowerCase()}`;
+                    registradosPromise.json.data.id_curso = id_curso;
                     dataRegistrados.push(registradosPromise.json.data);
                 }
             }
