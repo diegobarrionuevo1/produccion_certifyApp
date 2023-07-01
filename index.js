@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,30 +7,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const dotenv_1 = __importDefault(require("dotenv"));
-const path_1 = __importDefault(require("path"));
-const cors_1 = __importDefault(require("cors"));
-const fs_1 = __importDefault(require("fs"));
-const getData_1 = require("./getData");
-const individualData_1 = require("./individualData");
-dotenv_1.default.config();
-const app = (0, express_1.default)();
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import cors from "cors";
+import fs from "fs";
+import { getData } from "./getData.js";
+import { individualData } from "./individualData.js";
+dotenv.config();
+const app = express();
 const PORT = process.env.PORT || 3000;
 const HOSTNAME = process.env.HOSTNAME || '0.0.0.0';
-app.use((0, cors_1.default)());
-app.use(express_1.default.json());
+app.use(cors());
+app.use(express.json());
 const getFile = (req, res, fileType) => {
     try {
         if (req.headers.authorization === process.env.AUTHORIZATION_CERT) {
             res.status(200);
             const { id_curso, nombreArchivo } = req.params;
-            const filePath = path_1.default.join(__dirname, `files/${fileType}`, id_curso, nombreArchivo);
-            if (!fs_1.default.existsSync(filePath)) {
+            const filePath = path.join(__dirname, `files/${fileType}`, id_curso, nombreArchivo);
+            if (!fs.existsSync(filePath)) {
                 res.status(404).send("File not found");
                 return;
             }
@@ -62,7 +57,7 @@ app.get("/files/email/:id_curso/:nombreArchivo", (req, res) => {
 app.post("/crearcertificado", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (req.headers.authorization === process.env.AUTHORIZATION_CERT) {
-            yield (0, getData_1.getData)(req, res);
+            yield getData(req, res);
         }
         else {
             res.status(401);
@@ -77,7 +72,7 @@ app.post("/crearcertificado", (req, res) => __awaiter(void 0, void 0, void 0, fu
 app.post("/certificadoIndividual", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (req.headers.authorization === process.env.AUTHORIZATION_CERT) {
-            yield (0, individualData_1.individualData)(req, res);
+            yield individualData(req, res);
             console.log(req.body);
         }
         else {
